@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Shop</title>
+    <script>
+        function checkPaymentStatus() {
+            fetch('/check_payment_status')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.received) {
+                        document.getElementById('payment-status').innerText = 'Payment received! Here is your product:';
+                        document.getElementById('product-link').style.display = 'block';
+                    } else {
+                        document.getElementById('payment-status').innerText = 'Waiting for payment...';
+                    }
+                });
+        }
+
+        setInterval(checkPaymentStatus, 10000); // Check payment status every 10 seconds
+    </script>
+</head>
+<body>
+    <h1>Welcome to the Crypto Shop</h1>
+    <h2>{{ product.name }}</h2>
+    <p>{{ product.description }}</p>
+    <p>Price: {{ "%.8f"|format(product.price) }} BTC</p>
+    <p>Send payment to the following address:</p>
+    <p><strong>{{ shop_address }}</strong></p>
+    <p id="payment-status">Waiting for payment...</p>
+    <a id="product-link" href="https://google.com" style="display: none;">Download your product</a>
+</body>
+</html>
